@@ -11,6 +11,7 @@ interface Application {
 
 export default function JobTracker() {
   const [applications, setApplications] = useState<Application[]>([]);
+  const [coverLetter, setCoverLetter] = useState("");
 
   useEffect(() => {
     fetchApplications();
@@ -27,6 +28,19 @@ export default function JobTracker() {
       console.error(error);
     }
   };
+
+  const viewCoverLetter = async (id: number) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/applications/${id}/cover-letter`
+    );
+
+    setCoverLetter(response.data.coverLetter);
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 return (
   <>
@@ -83,6 +97,7 @@ return (
 
                     <td className="px-6 py-4">
                       <button
+                        onClick={() => viewCoverLetter(application.id)}
                         className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
                       >
                         📋 View
@@ -114,6 +129,18 @@ return (
             </tbody>
           </table>
         </div>
+
+              {coverLetter && (
+        <div className="mt-8 rounded-xl border border-[#B89D90] bg-[#F8F2EE] p-6">
+          <h2 className="mb-4 text-2xl font-bold">
+            Cover Letter
+          </h2>
+
+          <p className="whitespace-pre-wrap">
+            {coverLetter}
+          </p>
+        </div>
+      )}
       </div>
     </div>
   </>

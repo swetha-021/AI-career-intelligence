@@ -174,6 +174,42 @@ app.get("/applications/:id/resume", async (req, res) => {
 });
 
 
+app.get("/applications/:id/cover-letter", async (req, res) => {
+  try {
+    const db = await dbPromise;
+
+    const application = await db.get(
+      `
+      SELECT coverLetter
+      FROM applications
+      WHERE id = ?
+      `,
+      [req.params.id]
+    );
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Cover letter not found.",
+      });
+    }
+
+    res.json({
+      success: true,
+      coverLetter: application.coverLetter,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch cover letter.",
+    });
+  }
+});
+
+
 const PORT = 5000;
 
 app.listen(PORT, () => {
