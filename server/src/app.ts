@@ -15,7 +15,7 @@ import { generateCareerIntelligence } from "./services/careerIntelligenceService
 import { initializeDatabase } from "./db/database";
 
 
-const dbPromise = initializeDatabase();//database is open in the background
+const dbPromise = initializeDatabase(); //database is open in the background
 const app = express();
 
 app.use(cors());
@@ -24,7 +24,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Server Running 🚀",
+    message: "Server Running",
   });
 });
 
@@ -42,15 +42,13 @@ app.post("/career-intelligence", upload.single("resume"),async (req, res) => {
     // console.log("************************");
     }
 
-    
+    const result = await generateCareerIntelligence(
+    company,
+    jobDescription,
+    resumeText
+    );
 
-   const result = await generateCareerIntelligence(
-  company,
-  jobDescription,
-  resumeText
-);
-
-const parsedResult = JSON.parse(result ?? "{}");
+    const parsedResult = JSON.parse(result ?? "{}");
 
     parsedResult.recruiterSearchUrl =
     `https://www.google.com/search?q=${encodeURIComponent(
@@ -64,7 +62,7 @@ const parsedResult = JSON.parse(result ?? "{}");
     });
 
 
-  } catch (error) {
+   }catch (error) {
     console.error(error);
 
     res.status(500).json({

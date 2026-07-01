@@ -176,17 +176,17 @@ export async function generateCareerIntelligence(
             The cover letter should be returned in the "coverLetter" field.`
       },
       {
-  role: "user",
-        content: `
-        Company:
-        ${company}
+    role: "user",
+            content: `
+            Company:
+            ${company}
 
-        Job Description:
-        ${jobDescription}
+            Job Description:
+            ${jobDescription}
 
-        Candidate Resume:
-        ${resumeText || "No resume provided."}
-        `
+            Candidate Resume:
+            ${resumeText || "No resume provided."}
+            `
         }
     ]
   });
